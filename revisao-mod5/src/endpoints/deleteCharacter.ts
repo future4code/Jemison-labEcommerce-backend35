@@ -1,13 +1,18 @@
 import { Request, Response } from "express"
+import connection from '../connection';
 
-export default function deleteCharacter (req: Request, res: Response): void {
-    const { id } = req.params
+export default async function deleteCharacter(req: Request, res: Response): Promise<void> {
+    try {
 
-    // const index: number = characters.findIndex(
-    //     character => character.id === Number(id)
-    // )
+        const { id } = req.params
 
-    // characters.splice(index, 1)
+        await connection("character")
+            .delete()
+            .where({ id })
 
-    res.status(200).end()
+        res.status(200).end()
+
+    } catch (error) {
+        res.status(500).end()
+    }
 }
